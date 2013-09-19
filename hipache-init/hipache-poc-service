@@ -49,7 +49,7 @@ case $1 in
 	stop)
 		if isRunning; then
 			echo "Stopping $name"
-			docker stop `getContainerId`
+			docker stop `getContainerId` > /dev/null 2>&1
 			rm "$container_file"
 		else
 			echo "Not running"
