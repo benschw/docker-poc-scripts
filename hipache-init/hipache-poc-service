@@ -20,10 +20,15 @@ name=`basename $0`
 stdout_log="/var/log/$name.log"
 stderr_log="/var/log/$name.err"
 
-pid_file="/var/run/$name.pid"
+container_file="/var/run/$name.cid"
+
+
+getContainerId() {
+	cat "$container_file"
+}
 
 isRunning() {
-	[ -f "$pid_file" ] && ps `cat $pid_file` > /dev/null 2>&1
+	[ -f "$container_file" ] && docker ps -a | grep `getContainerId` > /dev/null 2>&1
 }
 
 
@@ -34,9 +39,9 @@ case $1 in
 			echo "Already started"
 		else
 			echo "Starting $name"
-			sudo -u "$user" $CMD > "$stdout_log" 2> "$stderr_log" & echo $! > "$pid_file"
+			sudo -u "$user" $CMD > $container_file
 			if ! isRunning; then
-				echo "Unable to start, see $stdout_log and $stderr_log"
+				echo "Unable to start"
 				exit 1
 			fi
 		fi
@@ -44,8 +49,8 @@ case $1 in
 	stop)
 		if isRunning; then
 			echo "Stopping $name"
-			kill `cat $pid_file`
-			rm "$pid_file"
+			docker stop `getContainerId`
+			rm "$container_file"
 		else
 			echo "Not running"
 		fi
