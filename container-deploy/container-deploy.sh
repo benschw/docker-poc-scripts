@@ -42,7 +42,7 @@ do
 	CONTAINER_IP=$(/sbin/ifconfig  $CONTAINER_BRIDGE | sed -n '2 p' | awk '{print $2}' | cut -d":" -f2)
 
 	# add container to hipache 
-	redis-cli -h $REDIS_IP -p $REDIS_PORT rpush frontend:$NAME.$WILDCARD_NAME http://$CONTAINER_IP:$CONTAINER_PORT
+	redis-cli -h $REDIS_IP -p $REDIS_PORT rpush frontend:$NAME.$WILDCARD_NAME http://$CONTAINER_IP:$CONTAINER_PORT > /dev/null
 
 done
 
