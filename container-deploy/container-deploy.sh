@@ -21,6 +21,7 @@ REDIS_PORT="6379"
 CONTAINERS=$(docker ps  | grep $REPO | awk '{print $1}' | sed ':a;N;$!ba;s/\n/ /g')
 if [ -n CONTAINERS ]
 then
+	echo a$CONTAINERSa
 	docker stop $CONTAINERS > /dev/null
 fi
 
