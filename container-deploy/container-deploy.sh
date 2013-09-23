@@ -18,7 +18,11 @@ REDIS_PORT="6379"
 ## stop
 
 # stop all containers running instances from supplied repo
-docker ps  | grep $REPO | awk '{print $1}' | sed ':a;N;$!ba;s/\n/ /g' | xargs docker stop
+CONTAINERS=$(docker ps  | grep $REPO | awk '{print $1}' | sed ':a;N;$!ba;s/\n/ /g')
+if [ -n CONTAINERS ]
+then
+	docker stop $CONTAINERS
+fi
 
 # clear hipache config referencing this repo
 redis-cli -h $REDIS_IP -p $REDIS_PORT del frontend:$NAME.$WILDCARD_NAME
