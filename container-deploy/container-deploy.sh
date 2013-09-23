@@ -33,7 +33,7 @@ redis-cli -h $REDIS_IP -p $REDIS_PORT del frontend:$NAME.$WILDCARD_NAME > /dev/n
 # configure hipache
 redis-cli -h $REDIS_IP -p $REDIS_PORT rpush frontend:$NAME.$WILDCARD_NAME $NAME > /dev/null
 
-for (( i=0; i<$INSTANCES; i++ ))
+for (( i=0; i<INSTANCES; i++ ))
 do
 	# start container
 	CONTAINER_ID=$(docker run -d $TAG)
