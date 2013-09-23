@@ -14,12 +14,7 @@ user="root"
 
 CMD="docker run -d -p :6379 -p :80 samalba/hipache supervisord -n"
 
-
 name=`basename $0`
-
-stdout_log="/var/log/$name.log"
-stderr_log="/var/log/$name.err"
-
 container_file="/var/run/$name.cid"
 
 
