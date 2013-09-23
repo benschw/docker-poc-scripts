@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 WILDCARD_NAME="io.fliglio.com"
 
