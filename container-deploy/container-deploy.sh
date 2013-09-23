@@ -25,7 +25,7 @@ then
 fi
 
 # clear hipache config referencing this repo
-redis-cli -h $REDIS_IP -p $REDIS_PORT del frontend:$NAME.$WILDCARD_NAME > /dev/null
+redis-cli -h $REDIS_IP -p $REDIS_PORT del frontend:$NAME.$WILDCARD_NAME > /dev/null 2>&1
 
 
 ## start
