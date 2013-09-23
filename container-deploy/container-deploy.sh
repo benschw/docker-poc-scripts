@@ -3,7 +3,8 @@
 WILDCARD_NAME="io.fliglio.com"
 
 TAG=$1  # jbfink/wordpress:latest
-INSTANCES=${2:-1} # defaults to 1 container to be instantiated
+INSTANCES=$([ -z $2 ] && echo "1" || echo $2)  # defaults to 1 container to be instantiated
+
 
 REPO=$(echo $TAG | awk -F':' '{print $1}') # jbfink/wordpress
 NAME=$(echo $REPO | tr / -) # jbfink-wordpress
@@ -33,8 +34,9 @@ redis-cli -h $REDIS_IP -p $REDIS_PORT del frontend:$NAME.$WILDCARD_NAME > /dev/n
 # configure hipache
 redis-cli -h $REDIS_IP -p $REDIS_PORT rpush frontend:$NAME.$WILDCARD_NAME $NAME > /dev/null
 
-for i in {1..$INSTANCES}
+for ((i=0; i<$INSTANCES; i++))
 do
+
 	# start container
 	CONTAINER_ID=$(docker run -d $TAG)
 	CONTAINER_PORT=$(docker port $CONTAINER_ID 80)
