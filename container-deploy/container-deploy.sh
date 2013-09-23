@@ -19,9 +19,8 @@ REDIS_PORT="6379"
 
 # stop all containers running instances from supplied repo
 CONTAINERS=$(docker ps  | grep $REPO | awk '{print $1}' | sed ':a;N;$!ba;s/\n/ /g')
-if [ -n CONTAINERS ]
+if [ -n "$CONTAINERS" ]
 then
-	echo a$CONTAINERS a
 	docker stop $CONTAINERS > /dev/null
 fi
 
