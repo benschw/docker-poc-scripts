@@ -26,7 +26,7 @@ redis-cli -h $REDIS_IP -p $REDIS_PORT del frontend:$NAME.$WILDCARD_NAME
 
 ## start
 
-for i in {1..$INSTANCES}
+for ((i=0;i<$INSTANCES;i++))
 do
 	echo run $i
 	# start container
