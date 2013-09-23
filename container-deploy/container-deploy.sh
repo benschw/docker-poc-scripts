@@ -21,21 +21,20 @@ REDIS_PORT="6379"
 CONTAINERS=$(docker ps  | grep $REPO | awk '{print $1}' | sed ':a;N;$!ba;s/\n/ /g')
 if [ -n CONTAINERS ]
 then
-	docker stop $CONTAINERS
+	docker stop $CONTAINERS > /dev/null
 fi
 
 # clear hipache config referencing this repo
-redis-cli -h $REDIS_IP -p $REDIS_PORT del frontend:$NAME.$WILDCARD_NAME
+redis-cli -h $REDIS_IP -p $REDIS_PORT del frontend:$NAME.$WILDCARD_NAME > /dev/null
 
 
 ## start
 
 # configure hipache
-redis-cli -h $REDIS_IP -p $REDIS_PORT rpush frontend:$NAME.$WILDCARD_NAME $NAME
+redis-cli -h $REDIS_IP -p $REDIS_PORT rpush frontend:$NAME.$WILDCARD_NAME $NAME > /dev/null
 
 for (( i=0; i<4; i++ ))
 do
-	echo run $i
 	# start container
 	CONTAINER_ID=$(docker run -d $TAG)
 	CONTAINER_PORT=$(docker port $CONTAINER_ID 80)
