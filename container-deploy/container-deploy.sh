@@ -3,7 +3,7 @@
 WILDCARD_NAME="io.fliglio.com"
 
 TAG=$1  # jbfink/wordpress:latest
-INSTANCES=$2 # defaults to 1 container to be instantiated
+INSTANCES=${2:1} # defaults to 1 container to be instantiated
 
 REPO=$(echo $TAG | awk -F':' '{print $1}') # jbfink/wordpress
 NAME=$(echo $REPO | tr / -) # jbfink-wordpress
