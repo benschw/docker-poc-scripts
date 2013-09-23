@@ -3,7 +3,7 @@
 WILDCARD_NAME="io.fliglio.com"
 
 TAG=$1  # jbfink/wordpress:latest
-INSTANCES=${2:1} # defaults to 1 container to be instantiated
+INSTANCES=${2:-1} # defaults to 1 container to be instantiated
 
 REPO=$(echo $TAG | awk -F':' '{print $1}') # jbfink/wordpress
 NAME=$(echo $REPO | tr / -) # jbfink-wordpress
@@ -48,5 +48,3 @@ done
 
 exit
 
-
-redis-cli -h 172.17.42.1 -p 6379 lrange frontend:jbfink-wordpress.io.fliglio.com 0 -1
