@@ -15,7 +15,7 @@ CONTAINER_PORT=$(sudo docker port $CONTAINER_ID 80)
 CONTAINER_BRIDGE=$(sudo docker inspect $CONTAINER_ID | grep Bridge | cut -d":" -f2 | cut -d'"' -f2)
 CONTAINER_IP=$(/sbin/ifconfig  $CONTAINER_BRIDGE | sed -n '2 p' | awk '{print $2}' | cut -d":" -f2)
 
-REDIS_HOST="$IP" # its all the same thing on one node
+REDIS_HOST="$CONTAINER_IP" # its all the same thing on one node
 REDIS_PORT="6379"
 
 echo redis-cli -h $REDIS_HOST -p $REDIS_PORT rpush frontend:$CLEAN_NAME.$WILDCARD_NAME $CLEAN_NAME
