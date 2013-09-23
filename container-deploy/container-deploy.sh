@@ -30,6 +30,9 @@ redis-cli -h $REDIS_IP -p $REDIS_PORT del frontend:$NAME.$WILDCARD_NAME
 
 ## start
 
+# configure hipache
+redis-cli -h $REDIS_IP -p $REDIS_PORT rpush frontend:$NAME.$WILDCARD_NAME $NAME
+
 for (( i=0; i<4; i++ ))
 do
 	echo run $i
@@ -39,8 +42,7 @@ do
 	CONTAINER_BRIDGE=$(docker inspect $CONTAINER_ID | grep Bridge | cut -d":" -f2 | cut -d'"' -f2)
 	CONTAINER_IP=$(/sbin/ifconfig  $CONTAINER_BRIDGE | sed -n '2 p' | awk '{print $2}' | cut -d":" -f2)
 
-	# configure hipache
-	redis-cli -h $REDIS_IP -p $REDIS_PORT rpush frontend:$NAME.$WILDCARD_NAME $NAME
+	# add container to hipache 
 	redis-cli -h $REDIS_IP -p $REDIS_PORT rpush frontend:$NAME.$WILDCARD_NAME http://$CONTAINER_IP:$CONTAINER_PORT
 
 done
