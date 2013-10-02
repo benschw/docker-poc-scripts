@@ -15,6 +15,9 @@ REDIS_BRIDGE=$(docker inspect $REDIS_ID | grep Bridge | cut -d":" -f2 | cut -d'"
 REDIS_IP=$(/sbin/ifconfig  $REDIS_BRIDGE | sed -n '2 p' | awk '{print $2}' | cut -d":" -f2)
 REDIS_PORT="6379"
 
+## pull updates
+
+docker pull $TAG
 
 ## stop
 
