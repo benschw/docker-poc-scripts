@@ -1,7 +1,7 @@
 #!/bin/sh
 ### BEGIN INIT INFO
 # Provides:          hipache-poc-service
-# Required-Start:    $remote_fs $syslog $all
+# Required-Start:    $remote_fs $syslog
 # Required-Stop:     $remote_fs $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
@@ -10,22 +10,25 @@
 ### END INIT INFO
 
 
-user="root"
+USER="root"
 
 CMD="docker run -d -p :6379 -p :80 samalba/hipache supervisord -n"
 
-name=`basename $0`
-container_file="/var/run/$name.cid"
+NAME=`baseNAME $0`
+CONTAINER_FILE="/var/run/$NAME.cid"
 
+
+# PID_FILE="/var/run/$NAME.pid"
+# /sbin/start-stop-daemon --user $USER --start --pidfile $PID_FILE --make-pidfile --background --chuid $USER --exec $CMD
+# /sbin/start-stop-daemon --user $USER --stop --pidfile $PID_FILE
 
 getContainerId() {
-	cat "$container_file"
+	cat "$CONTAINER_FILE"
 }
 
 isRunning() {
-	[ -f "$container_file" ] && docker ps -a | grep `getContainerId` > /dev/null 2>&1
+	[ -f "$CONTAINER_FILE" ] && docker ps -a | grep `getContainerId` > /dev/null 2>&1
 }
-
 
 
 case $1 in
@@ -33,8 +36,10 @@ case $1 in
 		if isRunning; then
 			echo "Already started"
 		else
-			echo "Starting $name"
-			sudo -u "$user" $CMD > $container_file
+			echo "Starting $NAME"
+
+
+			sudo -u "$USER" $CMD > $CONTAINER_FILE
 			if ! isRunning; then
 				echo "Unable to start"
 				exit 1
@@ -43,9 +48,9 @@ case $1 in
 	;;
 	stop)
 		if isRunning; then
-			echo "Stopping $name"
+			echo "Stopping $NAME"
 			docker stop `getContainerId` > /dev/null 2>&1
-			rm "$container_file"
+			rm -f "$CONTAINER_FILE"
 		else
 			echo "Not running"
 		fi

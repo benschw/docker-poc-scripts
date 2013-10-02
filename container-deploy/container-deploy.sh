@@ -1,6 +1,6 @@
 #!/bin/bash
 
-WILDCARD_NAME="io.fliglio.com"
+WILDCARD_NAME="superfancy.bvops.net"
 
 TAG=$1  # jbfink/wordpress:latest
 INSTANCES=$([ -z $2 ] && echo "1" || echo $2)  # defaults to 1 container to be instantiated
